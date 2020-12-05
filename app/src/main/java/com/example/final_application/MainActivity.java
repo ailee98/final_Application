@@ -92,25 +92,33 @@ public class MainActivity extends AppCompatActivity {
 
                             JSONObject jsonObject3 = new JSONObject(jsonStr2);
                             String jsonStr3 = jsonObject3.getString("items");
+                            int count = jsonObject3.getInt("totalCount");
+                            Log.d(TAG, "count : " + count);
 
                             JSONObject jsonObject4 = new JSONObject(jsonStr3);
                             String jsonStr4 = jsonObject4.getString("item");
 
-                            JSONArray jsonArray = new JSONArray(jsonStr4);
-
-                            ArrayList<String> printList = new ArrayList<>();
-
-                            for (int i=0; i < jsonArray.length(); i++) {
-                                JSONObject subJsonObject = jsonArray.getJSONObject(i);
-                                String routeName = subJsonObject.getString("subwayRouteName");
-                                String stationName = subJsonObject.getString("subwayStationName");
+                            if(count==1){
+                                JSONObject jsonObject5 = new JSONObject(jsonStr4);
+                                String routeName = jsonObject5.getString("subwayRouteName");
+                                String stationName = jsonObject5.getString("subwayStationName");
                                 String print="호선 : "+routeName+", 이름 : "+stationName+"\n";
+                                tv.setText(print + "\n");
+                            }else{
+                                JSONArray jsonArray = new JSONArray(jsonStr4);
 
-                                printList.add(print);
+                                ArrayList<String> printList = new ArrayList<>();
+
+                                for (int i=0; i < jsonArray.length(); i++) {
+                                    JSONObject subJsonObject = jsonArray.getJSONObject(i);
+                                    String routeName = subJsonObject.getString("subwayRouteName");
+                                    String stationName = subJsonObject.getString("subwayStationName");
+                                    String print="호선 : "+routeName+", 이름 : "+stationName+"\n";
+
+                                    printList.add(print);
+                                }
+                                tv.setText(printList + "\n");
                             }
-
-                            tv.setText(printList + "\n");
-
                             Log.d(TAG, "success");
 
                         } catch (UnsupportedEncodingException e) {
